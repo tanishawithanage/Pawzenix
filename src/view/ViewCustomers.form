@@ -278,24 +278,24 @@
                         </Component>
                         <Component class="javax.swing.JTextField" name="idField">
                           <Properties>
-                            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                              <Color blue="35" green="3d" red="18" type="rgb"/>
-                            </Property>
-                            <Property name="toolTipText" type="java.lang.String" value="New for a new record; set by the controller when selecting a saved row"/>
-                            <Property name="text" type="java.lang.String" value="New"/>
-                            <Property name="columns" type="int" value="16"/>
-                            <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
-                              <Insets value="[6, 8, 6, 8]"/>
-                            </Property>
                             <Property name="editable" type="boolean" value="false"/>
                             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                               <Color blue="ec" green="f1" red="e8" type="rgb"/>
                             </Property>
-                            <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                              <Dimension value="[200, 34]"/>
-                            </Property>
+                            <Property name="columns" type="int" value="16"/>
                             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                               <Font name="SansSerif" size="13" style="0"/>
+                            </Property>
+                            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                              <Color blue="35" green="3d" red="18" type="rgb"/>
+                            </Property>
+                            <Property name="text" type="java.lang.String" value="Auto ID"/>
+                            <Property name="toolTipText" type="java.lang.String" value="New for a new record; set by the controller when selecting a saved row"/>
+                            <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
+                              <Insets value="[6, 8, 6, 8]"/>
+                            </Property>
+                            <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                              <Dimension value="[200, 34]"/>
                             </Property>
                           </Properties>
                           <Constraints>
@@ -454,22 +454,22 @@
                         </Component>
                         <Component class="javax.swing.JTextField" name="emailField">
                           <Properties>
-                            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                              <Color blue="35" green="3d" red="18" type="rgb"/>
-                            </Property>
                             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                               <Color blue="fa" green="fc" red="fa" type="rgb"/>
                             </Property>
-                            <Property name="toolTipText" type="java.lang.String" value="name@example.com"/>
                             <Property name="columns" type="int" value="16"/>
+                            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                              <Font name="SansSerif" size="13" style="0"/>
+                            </Property>
+                            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                              <Color blue="35" green="3d" red="18" type="rgb"/>
+                            </Property>
+                            <Property name="toolTipText" type="java.lang.String" value="name@example.com"/>
                             <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
                               <Insets value="[6, 8, 6, 8]"/>
                             </Property>
                             <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                               <Dimension value="[200, 34]"/>
-                            </Property>
-                            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                              <Font name="SansSerif" size="13" style="0"/>
                             </Property>
                           </Properties>
                           <Constraints>
@@ -571,24 +571,24 @@
               <SubComponents>
                 <Component class="javax.swing.JButton" name="addButton">
                   <Properties>
-                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                      <Font name="SansSerif" size="13" style="1"/>
-                    </Property>
-                    <Property name="text" type="java.lang.String" value="Add"/>
                     <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                       <Color blue="65" green="75" red="18" type="rgb"/>
+                    </Property>
+                    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                      <Font name="SansSerif" size="13" style="1"/>
                     </Property>
                     <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                       <Color blue="ff" green="ff" red="ff" type="rgb"/>
                     </Property>
-                    <Property name="focusPainted" type="boolean" value="false"/>
-                    <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
-                      <Insets value="[9, 12, 9, 12]"/>
-                    </Property>
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                       <Image iconType="3" name="/icons/plus-white.png"/>
                     </Property>
+                    <Property name="text" type="java.lang.String" value="Add"/>
+                    <Property name="focusPainted" type="boolean" value="false"/>
                     <Property name="iconTextGap" type="int" value="8"/>
+                    <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
+                      <Insets value="[9, 12, 9, 12]"/>
+                    </Property>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
                       <Dimension value="[166, 40]"/>
                     </Property>

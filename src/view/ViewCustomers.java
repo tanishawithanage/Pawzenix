@@ -1,9 +1,14 @@
 package view;
 
+import controller.CustomerController;
+
 public class ViewCustomers extends javax.swing.JPanel {
     public ViewCustomers() {
         initComponents();
         configureTable();
+        if (!java.beans.Beans.isDesignTime()) {
+            CustomerController customerController = new controller.CustomerController(this);
+          }
     }
 
     // Controller hooks stay OUTSIDE GUI Builder guarded sections.
@@ -22,7 +27,7 @@ public class ViewCustomers extends javax.swing.JPanel {
     /** Clear the editor locally. This method does not delete a database record. */
     public void clearForm() {
         recordsTable.clearSelection();
-        idField.setText("New");
+        idField.setText("Auto ID");
         nameField.setText("");
         phoneField.setText("");
         emailField.setText("");
@@ -123,7 +128,7 @@ public class ViewCustomers extends javax.swing.JPanel {
         setBorder(javax.swing.BorderFactory.createEmptyBorder(24, 24, 20, 24));
         setMinimumSize(new java.awt.Dimension(880, 720));
         setPreferredSize(new java.awt.Dimension(1060, 800));
-        setLayout(new java.awt.BorderLayout(0, 0));
+        setLayout(new java.awt.BorderLayout());
 
         headerPanel.setBackground(new java.awt.Color(244, 247, 245));
         headerPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 18, 0));
@@ -152,7 +157,7 @@ public class ViewCustomers extends javax.swing.JPanel {
         add(headerPanel, java.awt.BorderLayout.NORTH);
 
         bodyPanel.setBackground(new java.awt.Color(244, 247, 245));
-        bodyPanel.setLayout(new java.awt.BorderLayout(0, 0));
+        bodyPanel.setLayout(new java.awt.BorderLayout());
 
         editorPanel.setBackground(new java.awt.Color(244, 247, 245));
         editorPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 16, 0));
@@ -189,15 +194,15 @@ public class ViewCustomers extends javax.swing.JPanel {
         idFieldLabel.setLabelFor(idField);
         idFieldPanel.add(idFieldLabel, java.awt.BorderLayout.NORTH);
 
-        idField.setForeground(new java.awt.Color(24, 61, 53));
-        idField.setToolTipText("New for a new record; set by the controller when selecting a saved row");
-        idField.setText("New");
-        idField.setColumns(16);
-        idField.setMargin(new java.awt.Insets(6, 8, 6, 8));
         idField.setEditable(false);
         idField.setBackground(new java.awt.Color(232, 241, 236));
-        idField.setPreferredSize(new java.awt.Dimension(200, 34));
+        idField.setColumns(16);
         idField.setFont(new java.awt.Font("SansSerif", 0, 13)); // NOI18N
+        idField.setForeground(new java.awt.Color(24, 61, 53));
+        idField.setText("Auto ID");
+        idField.setToolTipText("New for a new record; set by the controller when selecting a saved row");
+        idField.setMargin(new java.awt.Insets(6, 8, 6, 8));
+        idField.setPreferredSize(new java.awt.Dimension(200, 34));
         idFieldPanel.add(idField, java.awt.BorderLayout.CENTER);
 
         inputGrid.add(idFieldPanel);
@@ -251,13 +256,13 @@ public class ViewCustomers extends javax.swing.JPanel {
         emailFieldLabel.setLabelFor(emailField);
         emailFieldPanel.add(emailFieldLabel, java.awt.BorderLayout.NORTH);
 
-        emailField.setForeground(new java.awt.Color(24, 61, 53));
         emailField.setBackground(new java.awt.Color(250, 252, 250));
-        emailField.setToolTipText("name@example.com");
         emailField.setColumns(16);
+        emailField.setFont(new java.awt.Font("SansSerif", 0, 13)); // NOI18N
+        emailField.setForeground(new java.awt.Color(24, 61, 53));
+        emailField.setToolTipText("name@example.com");
         emailField.setMargin(new java.awt.Insets(6, 8, 6, 8));
         emailField.setPreferredSize(new java.awt.Dimension(200, 34));
-        emailField.setFont(new java.awt.Font("SansSerif", 0, 13)); // NOI18N
         emailFieldPanel.add(emailField, java.awt.BorderLayout.CENTER);
 
         inputGrid.add(emailFieldPanel);
@@ -283,7 +288,7 @@ public class ViewCustomers extends javax.swing.JPanel {
         inputGrid.add(addressFieldPanel);
 
         emptyFieldPanel0.setBackground(new java.awt.Color(255, 255, 255));
-        emptyFieldPanel0.setLayout(new java.awt.BorderLayout(0, 0));
+        emptyFieldPanel0.setLayout(new java.awt.BorderLayout());
         inputGrid.add(emptyFieldPanel0);
 
         inputCard.add(inputGrid, java.awt.BorderLayout.CENTER);
@@ -293,14 +298,14 @@ public class ViewCustomers extends javax.swing.JPanel {
         toolbar.setBackground(new java.awt.Color(244, 247, 245));
         toolbar.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 8, 0));
 
-        addButton.setFont(new java.awt.Font("SansSerif", 1, 13)); // NOI18N
-        addButton.setText("Add");
         addButton.setBackground(new java.awt.Color(24, 117, 101));
+        addButton.setFont(new java.awt.Font("SansSerif", 1, 13)); // NOI18N
         addButton.setForeground(new java.awt.Color(255, 255, 255));
-        addButton.setFocusPainted(false);
-        addButton.setMargin(new java.awt.Insets(9, 12, 9, 12));
         addButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/plus-white.png"))); // NOI18N
+        addButton.setText("Add");
+        addButton.setFocusPainted(false);
         addButton.setIconTextGap(8);
+        addButton.setMargin(new java.awt.Insets(9, 12, 9, 12));
         addButton.setPreferredSize(new java.awt.Dimension(166, 40));
         toolbar.add(addButton);
 

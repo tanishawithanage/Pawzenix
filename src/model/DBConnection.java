@@ -13,10 +13,20 @@ import java.sql.SQLException;
  * @author TANISHA SANJANA
  */
 public class DBConnection {
-      public static Connection getConnection()
-            throws SQLException {
+      public static Connection getConnection() throws SQLException {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
 
-        return DriverManager.getConnection("jdbc:mysql://localhost:3306/pawzenix","root","");
+            return DriverManager.getConnection
+                ("jdbc:mysql://localhost:3306/pawzenix","root","");
+        } 
+        
+        catch (ClassNotFoundException e) {
+            throw new SQLException(
+                    "MySQL driver class was not found. Check the Connector/J JAR.",
+                    e
+            );
+        }
     }
 }
       
