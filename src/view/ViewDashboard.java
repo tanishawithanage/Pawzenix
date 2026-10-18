@@ -81,7 +81,7 @@ public class ViewDashboard extends javax.swing.JPanel {
         refreshButton.setText("Refresh");
         refreshButton.setFocusPainted(false);
         refreshButton.setMargin(new java.awt.Insets(10, 12, 10, 12));
-        refreshButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/pawzenix/icons/refresh-teal.png"))); // NOI18N
+        refreshButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/refresh-teal.png"))); // NOI18N
         refreshButton.setIconTextGap(8);
         headerActions.add(refreshButton);
 
@@ -106,7 +106,7 @@ public class ViewDashboard extends javax.swing.JPanel {
         visitsTitle.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
         visitsTitle.setForeground(new java.awt.Color(97, 119, 110));
         visitsTitle.setText("Visits today");
-        visitsTitle.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/pawzenix/icons/appointments-teal.png"))); // NOI18N
+        visitsTitle.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/appointments-teal.png"))); // NOI18N
         visitsTitle.setIconTextGap(8);
         visitsCard.add(visitsTitle, java.awt.BorderLayout.NORTH);
 
@@ -124,7 +124,7 @@ public class ViewDashboard extends javax.swing.JPanel {
         petsTitle.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
         petsTitle.setForeground(new java.awt.Color(97, 119, 110));
         petsTitle.setText("Registered pets");
-        petsTitle.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/pawzenix/icons/pets-purple.png"))); // NOI18N
+        petsTitle.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/pets-purple.png"))); // NOI18N
         petsTitle.setIconTextGap(8);
         petsCard.add(petsTitle, java.awt.BorderLayout.NORTH);
 
@@ -142,7 +142,7 @@ public class ViewDashboard extends javax.swing.JPanel {
         collectedTitle.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
         collectedTitle.setForeground(new java.awt.Color(97, 119, 110));
         collectedTitle.setText("Collected today");
-        collectedTitle.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/pawzenix/icons/billing-teal.png"))); // NOI18N
+        collectedTitle.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/billing-teal.png"))); // NOI18N
         collectedTitle.setIconTextGap(8);
         collectedCard.add(collectedTitle, java.awt.BorderLayout.NORTH);
 
@@ -160,7 +160,7 @@ public class ViewDashboard extends javax.swing.JPanel {
         outstandingTitle.setFont(new java.awt.Font("SansSerif", 1, 12)); // NOI18N
         outstandingTitle.setForeground(new java.awt.Color(97, 119, 110));
         outstandingTitle.setText("Outstanding");
-        outstandingTitle.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/pawzenix/icons/reports-purple.png"))); // NOI18N
+        outstandingTitle.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/reports-purple.png"))); // NOI18N
         outstandingTitle.setIconTextGap(8);
         outstandingCard.add(outstandingTitle, java.awt.BorderLayout.NORTH);
 
@@ -194,7 +194,7 @@ public class ViewDashboard extends javax.swing.JPanel {
         bookButton.setText("Book a visit");
         bookButton.setFocusPainted(false);
         bookButton.setMargin(new java.awt.Insets(10, 12, 10, 12));
-        bookButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/pawzenix/icons/plus-white.png"))); // NOI18N
+        bookButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/plus-white.png"))); // NOI18N
         bookButton.setIconTextGap(8);
         scheduleHeader.add(bookButton, java.awt.BorderLayout.EAST);
 

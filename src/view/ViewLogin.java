@@ -29,7 +29,6 @@ public class ViewLogin extends javax.swing.JFrame {
         passwordField = new javax.swing.JPasswordField();
         errorLabel = new javax.swing.JLabel();
         signInButton = new javax.swing.JButton();
-        settingsButton = new javax.swing.JButton();
         loginFooter = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -54,7 +53,7 @@ public class ViewLogin extends javax.swing.JFrame {
         pawLabel.setFont(new java.awt.Font("SansSerif", 1, 120)); // NOI18N
         pawLabel.setForeground(new java.awt.Color(185, 221, 200));
         pawLabel.setPreferredSize(new java.awt.Dimension(150, 150));
-        pawLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/pawzenix/icons/paw-sage.png"))); // NOI18N
+        pawLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/paw-sage.png"))); // NOI18N
         pawLabel.setIconTextGap(8);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -204,7 +203,7 @@ public class ViewLogin extends javax.swing.JFrame {
         signInButton.setFocusPainted(false);
         signInButton.setMargin(new java.awt.Insets(10, 12, 10, 12));
         signInButton.setPreferredSize(new java.awt.Dimension(320, 46));
-        signInButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/pawzenix/icons/check-white.png"))); // NOI18N
+        signInButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/check-white.png"))); // NOI18N
         signInButton.setIconTextGap(8);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -214,22 +213,6 @@ public class ViewLogin extends javax.swing.JFrame {
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(0, 0, 24, 0);
         loginFields.add(signInButton, gridBagConstraints);
-
-        settingsButton.setFont(new java.awt.Font("SansSerif", 1, 13)); // NOI18N
-        settingsButton.setForeground(new java.awt.Color(97, 119, 110));
-        settingsButton.setText("Database settings");
-        settingsButton.setFocusPainted(false);
-        settingsButton.setMargin(new java.awt.Insets(10, 12, 10, 12));
-        settingsButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/pawzenix/icons/settings-teal.png"))); // NOI18N
-        settingsButton.setIconTextGap(8);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 9;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 10, 0);
-        loginFields.add(settingsButton, gridBagConstraints);
 
         loginFooter.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
         loginFooter.setForeground(new java.awt.Color(97, 119, 110));
@@ -265,7 +248,6 @@ public class ViewLogin extends javax.swing.JFrame {
     private javax.swing.JPasswordField passwordField;
     private javax.swing.JLabel passwordLabel;
     private javax.swing.JLabel pawLabel;
-    private javax.swing.JButton settingsButton;
     private javax.swing.JButton signInButton;
     private javax.swing.JTextField usernameField;
     private javax.swing.JLabel usernameLabel;

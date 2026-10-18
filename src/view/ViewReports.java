@@ -120,7 +120,7 @@ public class ViewReports extends javax.swing.JPanel {
         activityTitle.setFont(new java.awt.Font("SansSerif", 1, 21)); // NOI18N
         activityTitle.setForeground(new java.awt.Color(24, 117, 101));
         activityTitle.setText("Appointment activity");
-        activityTitle.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/pawzenix/icons/appointments-teal.png"))); // NOI18N
+        activityTitle.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/appointments-teal.png"))); // NOI18N
         activityTitle.setIconTextGap(8);
         activityCard.add(activityTitle, java.awt.BorderLayout.NORTH);
 
@@ -149,7 +149,7 @@ public class ViewReports extends javax.swing.JPanel {
         activityPreview.setFocusPainted(false);
         activityPreview.setMargin(new java.awt.Insets(10, 12, 10, 12));
         activityPreview.setPreferredSize(new java.awt.Dimension(170, 40));
-        activityPreview.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/pawzenix/icons/reports-white.png"))); // NOI18N
+        activityPreview.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/reports-white.png"))); // NOI18N
         activityPreview.setIconTextGap(8);
         activityActions.add(activityPreview);
 
@@ -159,7 +159,7 @@ public class ViewReports extends javax.swing.JPanel {
         activityExport.setFocusPainted(false);
         activityExport.setMargin(new java.awt.Insets(10, 12, 10, 12));
         activityExport.setPreferredSize(new java.awt.Dimension(155, 40));
-        activityExport.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/pawzenix/icons/export-teal.png"))); // NOI18N
+        activityExport.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/export-teal.png"))); // NOI18N
         activityExport.setIconTextGap(8);
         activityActions.add(activityExport);
 
@@ -174,7 +174,7 @@ public class ViewReports extends javax.swing.JPanel {
         revenueTitle.setFont(new java.awt.Font("SansSerif", 1, 21)); // NOI18N
         revenueTitle.setForeground(new java.awt.Color(117, 100, 171));
         revenueTitle.setText("Invoice revenue & balances");
-        revenueTitle.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/pawzenix/icons/billing-purple.png"))); // NOI18N
+        revenueTitle.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/billing-purple.png"))); // NOI18N
         revenueTitle.setIconTextGap(8);
         revenueCard.add(revenueTitle, java.awt.BorderLayout.NORTH);
 
@@ -203,7 +203,7 @@ public class ViewReports extends javax.swing.JPanel {
         revenuePreview.setFocusPainted(false);
         revenuePreview.setMargin(new java.awt.Insets(10, 12, 10, 12));
         revenuePreview.setPreferredSize(new java.awt.Dimension(170, 40));
-        revenuePreview.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/pawzenix/icons/reports-white.png"))); // NOI18N
+        revenuePreview.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/reports-white.png"))); // NOI18N
         revenuePreview.setIconTextGap(8);
         revenueActions.add(revenuePreview);
 
@@ -213,7 +213,7 @@ public class ViewReports extends javax.swing.JPanel {
         revenueExport.setFocusPainted(false);
         revenueExport.setMargin(new java.awt.Insets(10, 12, 10, 12));
         revenueExport.setPreferredSize(new java.awt.Dimension(155, 40));
-        revenueExport.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/pawzenix/icons/export-purple.png"))); // NOI18N
+        revenueExport.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/export-purple.png"))); // NOI18N
         revenueExport.setIconTextGap(8);
         revenueActions.add(revenueExport);
 
