@@ -1,5 +1,10 @@
 package view;
 
+/**
+ *
+ * @author TANISHA SANJANA
+ */
+
 import controller.CustomerController;
 
 public class ViewCustomers extends javax.swing.JPanel {

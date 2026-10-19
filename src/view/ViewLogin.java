@@ -1,5 +1,10 @@
 package view;
 
+/**
+ *
+ * @author TANISHA SANJANA
+ */
+
 public class ViewLogin extends javax.swing.JFrame {
 
     public ViewLogin() {
@@ -36,7 +41,7 @@ public class ViewLogin extends javax.swing.JFrame {
         setBackground(new java.awt.Color(244, 247, 245));
         setMinimumSize(new java.awt.Dimension(980, 660));
         setPreferredSize(new java.awt.Dimension(1120, 740));
-        getContentPane().setLayout(new java.awt.GridLayout(1, 2, 0, 0));
+        getContentPane().setLayout(new java.awt.GridLayout(1, 2));
 
         welcomePanel.setBackground(new java.awt.Color(20, 62, 53));
         welcomePanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(42, 44, 36, 35));

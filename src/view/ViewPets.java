@@ -1,5 +1,10 @@
 package view;
 
+/**
+ *
+ * @author TANISHA SANJANA
+ */
+
 public class ViewPets extends javax.swing.JPanel {
     public ViewPets() {
         initComponents();

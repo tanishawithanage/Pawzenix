@@ -1,5 +1,10 @@
 package view;
 
+/**
+ *
+ * @author TANISHA SANJANA
+ */
+
 public class ViewStaff extends javax.swing.JPanel {
     public ViewStaff() {
         initComponents();

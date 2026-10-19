@@ -1,5 +1,10 @@
 package view;
 
+/**
+ *
+ * @author TANISHA SANJANA
+ */
+
 public class ViewMain extends javax.swing.JPanel {
 
     public ViewMain() {

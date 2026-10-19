@@ -1,5 +1,10 @@
 package view;
 
+/**
+ *
+ * @author TANISHA SANJANA
+ */
+
 public class ViewBilling extends javax.swing.JPanel {
     public ViewBilling() {
         initComponents();

@@ -1,5 +1,10 @@
 package view;
 
+/**
+ *
+ * @author TANISHA SANJANA
+ */
+
 public class ViewDashboard extends javax.swing.JPanel {
 
     public ViewDashboard() {

@@ -1,9 +1,8 @@
 package view;
 
 /**
- * Pawzenix input form. Layout metadata is stored in the matching .form file.
- * Database/controller code was not included in the uploaded project.
- * Use the public component getters to connect your existing controller.
+ *
+ * @author TANISHA SANJANA
  */
 public class ViewAppointments extends javax.swing.JPanel {
     public ViewAppointments() {
