@@ -4,11 +4,13 @@ package view;
  *
  * @author TANISHA SANJANA
  */
-
 public class ViewStaff extends javax.swing.JPanel {
     public ViewStaff() {
         initComponents();
         configureTable();
+        if (!java.beans.Beans.isDesignTime()) {
+            new controller.StaffController(this);
+        }
     }
 
     // Controller hooks stay OUTSIDE GUI Builder guarded sections.

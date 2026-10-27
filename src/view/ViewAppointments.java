@@ -8,6 +8,9 @@ public class ViewAppointments extends javax.swing.JPanel {
     public ViewAppointments() {
         initComponents();
         configureTable();
+        if (!java.beans.Beans.isDesignTime()) {
+            new controller.AppointmentController(this);
+        }
     }
 
     // Controller hooks stay OUTSIDE GUI Builder guarded sections.

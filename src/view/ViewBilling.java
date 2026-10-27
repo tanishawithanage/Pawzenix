@@ -4,11 +4,13 @@ package view;
  *
  * @author TANISHA SANJANA
  */
-
 public class ViewBilling extends javax.swing.JPanel {
     public ViewBilling() {
         initComponents();
         configureTable();
+        if (!java.beans.Beans.isDesignTime()) {
+            new controller.BillingController(this);
+        }
     }
 
     // Controller hooks stay OUTSIDE GUI Builder guarded sections.

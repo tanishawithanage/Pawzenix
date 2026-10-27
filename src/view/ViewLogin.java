@@ -4,12 +4,20 @@ package view;
  *
  * @author TANISHA SANJANA
  */
-
 public class ViewLogin extends javax.swing.JFrame {
 
     public ViewLogin() {
         initComponents();
+        if (!java.beans.Beans.isDesignTime()) {
+            new controller.LoginController(this);
+        }
     }
+
+    // Controller hooks stay OUTSIDE GUI Builder guarded sections.
+    public javax.swing.JTextField getUsernameField() { return usernameField; }
+    public javax.swing.JPasswordField getPasswordField() { return passwordField; }
+    public javax.swing.JButton getSignInButton() { return signInButton; }
+    public javax.swing.JLabel getErrorLabel() { return errorLabel; }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents

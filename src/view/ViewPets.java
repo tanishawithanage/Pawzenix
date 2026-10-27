@@ -4,11 +4,13 @@ package view;
  *
  * @author TANISHA SANJANA
  */
-
 public class ViewPets extends javax.swing.JPanel {
     public ViewPets() {
         initComponents();
         configureTable();
+        if (!java.beans.Beans.isDesignTime()) {
+            new controller.PetController(this);
+        }
     }
 
     // Controller hooks stay OUTSIDE GUI Builder guarded sections.

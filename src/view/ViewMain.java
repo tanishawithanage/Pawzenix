@@ -1,60 +1,52 @@
 package view;
 
+import model.User;
+
 /**
  *
  * @author TANISHA SANJANA
  */
-
 public class ViewMain extends javax.swing.JPanel {
 
+    // Added in code (not in the GUI Builder form) so it survives form regeneration.
+    private javax.swing.JButton passwordButton;
+
     public ViewMain() {
+        this(null);   // no signed-in user: development mode
+    }
+
+    public ViewMain(User user) {
         initComponents();
-        contentPanel.setLayout(new java.awt.BorderLayout());
+        addPasswordButton();
+        if (!java.beans.Beans.isDesignTime()) {
+            new controller.MainController(this, user);
+        }
+    }
 
-    showPage(new ViewDashboard());
+    private void addPasswordButton() {
+        passwordButton = new javax.swing.JButton("Change password");
+        passwordButton.setFont(logoutButton.getFont());
+        passwordButton.setForeground(logoutButton.getForeground());
+        passwordButton.setFocusPainted(false);
+        passwordButton.setMargin(new java.awt.Insets(10, 12, 10, 12));
+        accountPanel.add(passwordButton, 2);   // just above "Sign out"
+    }
 
-    dashboardButton.addActionListener(e ->
-        showPage(new ViewDashboard())
-    );
+    // Controller hooks stay OUTSIDE GUI Builder guarded sections.
+    public javax.swing.JPanel getContentPanel() { return contentPanel; }
+    public javax.swing.JButton getDashboardButton() { return dashboardButton; }
+    public javax.swing.JButton getCustomersButton() { return customersButton; }
+    public javax.swing.JButton getPetsButton() { return petsButton; }
+    public javax.swing.JButton getAppointmentsButton() { return appointmentsButton; }
+    public javax.swing.JButton getBillingButton() { return billingButton; }
+    public javax.swing.JButton getServicesButton() { return servicesButton; }
+    public javax.swing.JButton getStaffButton() { return staffButton; }
+    public javax.swing.JButton getReportsButton() { return reportsButton; }
+    public javax.swing.JLabel getUserLabel() { return userLabel; }
+    public javax.swing.JLabel getRoleLabel() { return roleLabel; }
+    public javax.swing.JButton getPasswordButton() { return passwordButton; }
+    public javax.swing.JButton getLogoutButton() { return logoutButton; }
 
-    customersButton.addActionListener(e ->
-        showPage(new ViewCustomers())
-    );
-
-    petsButton.addActionListener(e ->
-        showPage(new ViewPets())
-    );
-
-    appointmentsButton.addActionListener(e ->
-        showPage(new ViewAppointments())
-    );
-
-    billingButton.addActionListener(e ->
-        showPage(new ViewBilling())
-    );
-
-    servicesButton.addActionListener(e ->
-        showPage(new ViewServices())
-    );
-
-    staffButton.addActionListener(e ->
-        showPage(new ViewStaff())
-    );
-
-    reportsButton.addActionListener(e ->
-        showPage(new ViewReports())
-    );
-  }
-
-    private void showPage(javax.swing.JPanel page) {
-
-    contentPanel.removeAll();
-    
-    contentPanel.add(page, java.awt.BorderLayout.CENTER);
-
-    contentPanel.revalidate();
-    contentPanel.repaint();
-}
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {

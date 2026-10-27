@@ -4,12 +4,27 @@ package view;
  *
  * @author TANISHA SANJANA
  */
-
 public class ViewDashboard extends javax.swing.JPanel {
 
     public ViewDashboard() {
         initComponents();
+        if (!java.beans.Beans.isDesignTime()) {
+            new controller.DashboardController(this);
+        }
     }
+
+    // Controller hooks stay OUTSIDE GUI Builder guarded sections.
+    public javax.swing.JLabel getFollowupTitle() { return followupTitle; }
+    public javax.swing.JButton getRefreshButton() { return refreshButton; }
+    public javax.swing.JButton getBookButton() { return bookButton; }
+    public javax.swing.JLabel getUpdatedLabel() { return updatedLabel; }
+    public javax.swing.JLabel getVisitsAmount() { return visitsAmount; }
+    public javax.swing.JLabel getPetsAmount() { return petsAmount; }
+    public javax.swing.JLabel getCollectedAmount() { return collectedAmount; }
+    public javax.swing.JLabel getOutstandingAmount() { return outstandingAmount; }
+    public javax.swing.JTable getScheduleTable() { return scheduleTable; }
+    public javax.swing.JPanel getChartPanel() { return chartPanel; }
+    public javax.swing.JPanel getFollowupsPanel() { return followupsPanel; }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
