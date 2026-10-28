@@ -1,6 +1,9 @@
 package view;
 
-
+/**
+ *
+ * @author TANISHA SANJANA
+ */
 public class ViewReports extends javax.swing.JPanel {
 
     public ViewReports() {

@@ -8,6 +8,10 @@ import javax.swing.table.TableRowSorter;
 import model.Customer;
 import view.ViewCustomers;
 
+/**
+ *
+ * @author TANISHA SANJANA
+ */
 public class CustomerController {
 
     private final ViewCustomers view;

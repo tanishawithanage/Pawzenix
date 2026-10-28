@@ -13,7 +13,6 @@ import java.time.format.DateTimeFormatter;
  *
  * @author TANISHA SANJANA
  */
-
 public class DashboardController {
     private final ViewDashboard view;
     private boolean loading;

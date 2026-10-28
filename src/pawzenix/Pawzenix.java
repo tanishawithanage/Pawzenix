@@ -8,6 +8,7 @@ import java.awt.BorderLayout;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import view.ViewMain;
+import view.ViewLogin;
 
 
 /**
@@ -22,14 +23,9 @@ public class Pawzenix {
     public static void main(String[] args) {
          SwingUtilities.invokeLater(() -> {
 
-            JFrame window = new JFrame("Pawzenix");
-
-            window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            window.setContentPane(new ViewMain());
-            window.pack();
-            window.setLocationRelativeTo(null);
-            window.setVisible(true);
-
+            ViewLogin login = new ViewLogin();  
+            login.setLocationRelativeTo(null);   
+            login.setVisible(true);
         });
     }
     

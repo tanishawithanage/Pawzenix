@@ -14,7 +14,6 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author TANISHA SANJANA
  */
-
 public class BillingController {
     private final ViewBilling view;
     private List<Bill> records=new ArrayList<>();

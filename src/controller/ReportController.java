@@ -25,29 +25,21 @@ import net.sf.jasperreports.swing.JRViewer;
 import view.ViewReports;
 
 /**
- * Controller for the Reports page.
  *
- * How a Jasper report is produced (the same 4 steps for both reports):
- *   1. COMPILE  the design file (src/reports/*.jrxml) into a JasperReport object
- *   2. LOAD     the rows from MySQL (model.ReportData) and wrap them in a data source
- *   3. FILL     the report with the rows + parameters (dates) -> a JasperPrint (the finished pages)
- *   4. SHOW     the JasperPrint in Jasper's viewer window (JRViewer)
+ * @author TANISHA SANJANA
  */
 public class ReportController {
 
-    /** Small helper type so one method can run either report: "give me the rows between two dates". */
     private interface RowSource {
         List<Map<String, ?>> load(LocalDate from, LocalDate to) throws SQLException;
     }
 
     private final ViewReports view;
-    // A design is compiled only once, then reused (compiling takes a moment).
     private final Map<String, JasperReport> compiled = new HashMap<>();
 
     public ReportController(ViewReports view) {
         this.view = view;
 
-        // Suggest "this month so far" so the person can just press Preview.
         LocalDate today = LocalDate.now();
         view.getFromField().setText(today.withDayOfMonth(1).toString());
         view.getToField().setText(today.toString());
@@ -58,7 +50,6 @@ public class ReportController {
                 run("invoice_revenue", "Invoice revenue & balances", ReportData::revenue));
     }
 
-    /** Runs one report from start to finish. Any problem is shown in an error dialog. */
     private void run(String design, String title, RowSource source) {
         try {
             LocalDate from = readDate(view.getFromField().getText(), "From");
@@ -67,9 +58,9 @@ public class ReportController {
                 throw new IllegalArgumentException("The From date must not be after the To date.");
             }
             view.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-            List<Map<String, ?>> rows = source.load(from, to);          // step 2
-            JasperPrint print = fill(design, rows, from, to);          // steps 1 + 3
-            show(print, title);                                         // step 4
+            List<Map<String, ?>> rows = source.load(from, to);          
+            JasperPrint print = fill(design, rows, from, to);          
+            show(print, title);                                         
         } catch (IllegalArgumentException | SQLException | JRException e) {
             Input.error(view, e);
         } finally {
@@ -85,7 +76,6 @@ public class ReportController {
         }
     }
 
-    /** Compiles (once) and fills the design with the rows. The parameters appear in the report header. */
     private JasperPrint fill(String design, List<Map<String, ?>> rows, LocalDate from, LocalDate to)
             throws JRException {
         Map<String, Object> parameters = new HashMap<>();
@@ -96,7 +86,6 @@ public class ReportController {
         return JasperFillManager.fillReport(loadDesign(design), parameters, new JRMapCollectionDataSource(rows));
     }
 
-    /** Reads /reports/<design>.jrxml from the project and compiles it. */
     private JasperReport loadDesign(String design) throws JRException {
         JasperReport report = compiled.get(design);
         if (report == null) {
@@ -115,7 +104,6 @@ public class ReportController {
         return report;
     }
 
-    /** Opens the finished report in a preview window (it has zoom, page navigation, print and save buttons). */
     private void show(JasperPrint print, String title) throws JRException {
         JRViewer viewer = new JRViewer(print);
         Window owner = SwingUtilities.getWindowAncestor(view);
