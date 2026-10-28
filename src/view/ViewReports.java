@@ -47,6 +47,7 @@ public class ViewReports extends javax.swing.JPanel {
         activityHint = new javax.swing.JLabel();
         activityActions = new javax.swing.JPanel();
         activityPreview = new javax.swing.JButton();
+        activityExport = new javax.swing.JButton();
         revenueCard = new javax.swing.JPanel();
         revenueTitle = new javax.swing.JLabel();
         revenueCopy = new javax.swing.JPanel();
@@ -54,6 +55,7 @@ public class ViewReports extends javax.swing.JPanel {
         revenueHint = new javax.swing.JLabel();
         revenueActions = new javax.swing.JPanel();
         revenuePreview = new javax.swing.JButton();
+        revenueExport = new javax.swing.JButton();
         statusPanel = new javax.swing.JPanel();
         statusLabel = new javax.swing.JLabel();
 
@@ -160,12 +162,22 @@ public class ViewReports extends javax.swing.JPanel {
         activityPreview.setFont(new java.awt.Font("SansSerif", 1, 13)); // NOI18N
         activityPreview.setForeground(new java.awt.Color(255, 255, 255));
         activityPreview.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/reports-white.png"))); // NOI18N
-        activityPreview.setText("View report");
+        activityPreview.setText("Preview report");
         activityPreview.setFocusPainted(false);
         activityPreview.setIconTextGap(8);
         activityPreview.setMargin(new java.awt.Insets(10, 12, 10, 12));
         activityPreview.setPreferredSize(new java.awt.Dimension(170, 40));
         activityActions.add(activityPreview);
+
+        activityExport.setFont(new java.awt.Font("SansSerif", 1, 13)); // NOI18N
+        activityExport.setForeground(new java.awt.Color(24, 117, 101));
+        activityExport.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/export-teal.png"))); // NOI18N
+        activityExport.setText("Export PDF");
+        activityExport.setFocusPainted(false);
+        activityExport.setIconTextGap(8);
+        activityExport.setMargin(new java.awt.Insets(10, 12, 10, 12));
+        activityExport.setPreferredSize(new java.awt.Dimension(155, 40));
+        activityActions.add(activityExport);
 
         activityCard.add(activityActions, java.awt.BorderLayout.SOUTH);
 
@@ -204,12 +216,22 @@ public class ViewReports extends javax.swing.JPanel {
         revenuePreview.setFont(new java.awt.Font("SansSerif", 1, 13)); // NOI18N
         revenuePreview.setForeground(new java.awt.Color(255, 255, 255));
         revenuePreview.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/reports-white.png"))); // NOI18N
-        revenuePreview.setText("View report");
+        revenuePreview.setText("Preview report");
         revenuePreview.setFocusPainted(false);
         revenuePreview.setIconTextGap(8);
         revenuePreview.setMargin(new java.awt.Insets(10, 12, 10, 12));
         revenuePreview.setPreferredSize(new java.awt.Dimension(170, 40));
         revenueActions.add(revenuePreview);
+
+        revenueExport.setFont(new java.awt.Font("SansSerif", 1, 13)); // NOI18N
+        revenueExport.setForeground(new java.awt.Color(117, 100, 171));
+        revenueExport.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/export-purple.png"))); // NOI18N
+        revenueExport.setText("Export PDF");
+        revenueExport.setFocusPainted(false);
+        revenueExport.setIconTextGap(8);
+        revenueExport.setMargin(new java.awt.Insets(10, 12, 10, 12));
+        revenueExport.setPreferredSize(new java.awt.Dimension(155, 40));
+        revenueActions.add(revenueExport);
 
         revenueCard.add(revenueActions, java.awt.BorderLayout.SOUTH);
 
@@ -238,6 +260,7 @@ public class ViewReports extends javax.swing.JPanel {
     private javax.swing.JPanel activityCard;
     private javax.swing.JPanel activityCopy;
     private javax.swing.JLabel activityDescription;
+    private javax.swing.JButton activityExport;
     private javax.swing.JLabel activityHint;
     private javax.swing.JButton activityPreview;
     private javax.swing.JLabel activityTitle;
@@ -255,6 +278,7 @@ public class ViewReports extends javax.swing.JPanel {
     private javax.swing.JPanel revenueCard;
     private javax.swing.JPanel revenueCopy;
     private javax.swing.JLabel revenueDescription;
+    private javax.swing.JButton revenueExport;
     private javax.swing.JLabel revenueHint;
     private javax.swing.JButton revenuePreview;
     private javax.swing.JLabel revenueTitle;
