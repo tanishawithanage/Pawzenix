@@ -47,7 +47,6 @@ public class ViewReports extends javax.swing.JPanel {
         activityHint = new javax.swing.JLabel();
         activityActions = new javax.swing.JPanel();
         activityPreview = new javax.swing.JButton();
-        activityExport = new javax.swing.JButton();
         revenueCard = new javax.swing.JPanel();
         revenueTitle = new javax.swing.JLabel();
         revenueCopy = new javax.swing.JPanel();
@@ -55,18 +54,17 @@ public class ViewReports extends javax.swing.JPanel {
         revenueHint = new javax.swing.JLabel();
         revenueActions = new javax.swing.JPanel();
         revenuePreview = new javax.swing.JButton();
-        revenueExport = new javax.swing.JButton();
         statusPanel = new javax.swing.JPanel();
         statusLabel = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(244, 247, 245));
         setBorder(javax.swing.BorderFactory.createEmptyBorder(30, 30, 20, 30));
         setPreferredSize(new java.awt.Dimension(1160, 820));
-        setLayout(new java.awt.BorderLayout(0, 0));
+        setLayout(new java.awt.BorderLayout());
 
         headerPanel.setBackground(new java.awt.Color(244, 247, 245));
         headerPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 22, 0));
-        headerPanel.setLayout(new java.awt.BorderLayout(0, 0));
+        headerPanel.setLayout(new java.awt.BorderLayout());
 
         headingPanel.setBackground(new java.awt.Color(244, 247, 245));
         headingPanel.setLayout(new java.awt.GridLayout(2, 1, 0, 8));
@@ -123,7 +121,7 @@ public class ViewReports extends javax.swing.JPanel {
         bodyPanel.add(filterPanel, java.awt.BorderLayout.NORTH);
 
         reportBody.setBackground(new java.awt.Color(244, 247, 245));
-        reportBody.setLayout(new java.awt.BorderLayout(0, 0));
+        reportBody.setLayout(new java.awt.BorderLayout());
 
         reportCards.setBackground(new java.awt.Color(244, 247, 245));
         reportCards.setPreferredSize(new java.awt.Dimension(0, 420));
@@ -158,26 +156,16 @@ public class ViewReports extends javax.swing.JPanel {
         activityActions.setBackground(new java.awt.Color(255, 255, 255));
         activityActions.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 10, 0));
 
-        activityPreview.setFont(new java.awt.Font("SansSerif", 1, 13)); // NOI18N
         activityPreview.setBackground(new java.awt.Color(24, 117, 101));
+        activityPreview.setFont(new java.awt.Font("SansSerif", 1, 13)); // NOI18N
         activityPreview.setForeground(new java.awt.Color(255, 255, 255));
-        activityPreview.setText("Preview report");
+        activityPreview.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/reports-white.png"))); // NOI18N
+        activityPreview.setText("View report");
         activityPreview.setFocusPainted(false);
+        activityPreview.setIconTextGap(8);
         activityPreview.setMargin(new java.awt.Insets(10, 12, 10, 12));
         activityPreview.setPreferredSize(new java.awt.Dimension(170, 40));
-        activityPreview.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/reports-white.png"))); // NOI18N
-        activityPreview.setIconTextGap(8);
         activityActions.add(activityPreview);
-
-        activityExport.setFont(new java.awt.Font("SansSerif", 1, 13)); // NOI18N
-        activityExport.setForeground(new java.awt.Color(24, 117, 101));
-        activityExport.setText("Export PDF");
-        activityExport.setFocusPainted(false);
-        activityExport.setMargin(new java.awt.Insets(10, 12, 10, 12));
-        activityExport.setPreferredSize(new java.awt.Dimension(155, 40));
-        activityExport.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/export-teal.png"))); // NOI18N
-        activityExport.setIconTextGap(8);
-        activityActions.add(activityExport);
 
         activityCard.add(activityActions, java.awt.BorderLayout.SOUTH);
 
@@ -212,26 +200,16 @@ public class ViewReports extends javax.swing.JPanel {
         revenueActions.setBackground(new java.awt.Color(255, 255, 255));
         revenueActions.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 10, 0));
 
-        revenuePreview.setFont(new java.awt.Font("SansSerif", 1, 13)); // NOI18N
         revenuePreview.setBackground(new java.awt.Color(117, 100, 171));
+        revenuePreview.setFont(new java.awt.Font("SansSerif", 1, 13)); // NOI18N
         revenuePreview.setForeground(new java.awt.Color(255, 255, 255));
-        revenuePreview.setText("Preview report");
+        revenuePreview.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/reports-white.png"))); // NOI18N
+        revenuePreview.setText("View report");
         revenuePreview.setFocusPainted(false);
+        revenuePreview.setIconTextGap(8);
         revenuePreview.setMargin(new java.awt.Insets(10, 12, 10, 12));
         revenuePreview.setPreferredSize(new java.awt.Dimension(170, 40));
-        revenuePreview.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/reports-white.png"))); // NOI18N
-        revenuePreview.setIconTextGap(8);
         revenueActions.add(revenuePreview);
-
-        revenueExport.setFont(new java.awt.Font("SansSerif", 1, 13)); // NOI18N
-        revenueExport.setForeground(new java.awt.Color(117, 100, 171));
-        revenueExport.setText("Export PDF");
-        revenueExport.setFocusPainted(false);
-        revenueExport.setMargin(new java.awt.Insets(10, 12, 10, 12));
-        revenueExport.setPreferredSize(new java.awt.Dimension(155, 40));
-        revenueExport.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/export-purple.png"))); // NOI18N
-        revenueExport.setIconTextGap(8);
-        revenueActions.add(revenueExport);
 
         revenueCard.add(revenueActions, java.awt.BorderLayout.SOUTH);
 
@@ -241,7 +219,7 @@ public class ViewReports extends javax.swing.JPanel {
 
         statusPanel.setBackground(new java.awt.Color(244, 247, 245));
         statusPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(18, 0, 0, 0));
-        statusPanel.setLayout(new java.awt.BorderLayout(0, 0));
+        statusPanel.setLayout(new java.awt.BorderLayout());
 
         statusLabel.setFont(new java.awt.Font("SansSerif", 0, 13)); // NOI18N
         statusLabel.setForeground(new java.awt.Color(97, 119, 110));
@@ -260,7 +238,6 @@ public class ViewReports extends javax.swing.JPanel {
     private javax.swing.JPanel activityCard;
     private javax.swing.JPanel activityCopy;
     private javax.swing.JLabel activityDescription;
-    private javax.swing.JButton activityExport;
     private javax.swing.JLabel activityHint;
     private javax.swing.JButton activityPreview;
     private javax.swing.JLabel activityTitle;
@@ -278,7 +255,6 @@ public class ViewReports extends javax.swing.JPanel {
     private javax.swing.JPanel revenueCard;
     private javax.swing.JPanel revenueCopy;
     private javax.swing.JLabel revenueDescription;
-    private javax.swing.JButton revenueExport;
     private javax.swing.JLabel revenueHint;
     private javax.swing.JButton revenuePreview;
     private javax.swing.JLabel revenueTitle;
