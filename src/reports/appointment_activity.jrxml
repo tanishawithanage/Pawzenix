@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Pawzenix report 1: Appointment activity
+  Data comes from ReportData.appointments(from, to) as a list of maps.
+  Fields (the keys of each map): id, date, pet, customer, service, staff, status
+  Parameters are filled in by ReportController: FROM_DATE, TO_DATE, GENERATED_AT
+-->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
+              name="appointment_activity" pageWidth="595" pageHeight="842" columnWidth="523"
+              leftMargin="36" rightMargin="36" topMargin="30" bottomMargin="30"
+              whenNoDataType="NoDataSection">
+
+    <style name="Base" isDefault="true" fontName="DejaVu Sans" fontSize="8"/>
+    <style name="Zebra" mode="Opaque" backcolor="#FFFFFF">
+        <conditionalStyle>
+            <conditionExpression><![CDATA[$V{REPORT_COUNT} % 2 == 0]]></conditionExpression>
+            <style mode="Opaque" backcolor="#F1F6F3"/>
+        </conditionalStyle>
+    </style>
+    <style name="StatusColour" forecolor="#1F2A27">
+        <conditionalStyle>
+            <conditionExpression><![CDATA["Completed".equals($F{status})]]></conditionExpression>
+            <style forecolor="#187565" isBold="true"/>
+        </conditionalStyle>
+        <conditionalStyle>
+            <conditionExpression><![CDATA["Cancelled".equals($F{status}) || "No-show".equals($F{status})]]></conditionExpression>
+            <style forecolor="#C0392B" isBold="true"/>
+        </conditionalStyle>
+    </style>
+
+    <parameter name="FROM_DATE" class="java.lang.String"/>
+    <parameter name="TO_DATE" class="java.lang.String"/>
+    <parameter name="GENERATED_AT" class="java.lang.String"/>
+
+    <field name="id" class="java.lang.Integer"/>
+    <field name="date" class="java.lang.String"/>
+    <field name="pet" class="java.lang.String"/>
+    <field name="customer" class="java.lang.String"/>
+    <field name="service" class="java.lang.String"/>
+    <field name="staff" class="java.lang.String"/>
+    <field name="status" class="java.lang.String"/>
+
+    <!-- one counter per status; each adds 1 when the row's status matches -->
+    <variable name="totalVisits" class="java.lang.Integer" calculation="Count">
+        <variableExpression><![CDATA[$F{id}]]></variableExpression>
+    </variable>
+    <variable name="booked" class="java.lang.Integer" calculation="Sum">
+        <variableExpression><![CDATA["Booked".equals($F{status}) ? 1 : 0]]></variableExpression>
+        <initialValueExpression><![CDATA[0]]></initialValueExpression>
+    </variable>
+    <variable name="confirmed" class="java.lang.Integer" calculation="Sum">
+        <variableExpression><![CDATA["Confirmed".equals($F{status}) ? 1 : 0]]></variableExpression>
+        <initialValueExpression><![CDATA[0]]></initialValueExpression>
+    </variable>
+    <variable name="completed" class="java.lang.Integer" calculation="Sum">
+        <variableExpression><![CDATA["Completed".equals($F{status}) ? 1 : 0]]></variableExpression>
+        <initialValueExpression><![CDATA[0]]></initialValueExpression>
+    </variable>
+    <variable name="cancelled" class="java.lang.Integer" calculation="Sum">
+        <variableExpression><![CDATA["Cancelled".equals($F{status}) ? 1 : 0]]></variableExpression>
+        <initialValueExpression><![CDATA[0]]></initialValueExpression>
+    </variable>
+    <variable name="noShow" class="java.lang.Integer" calculation="Sum">
+        <variableExpression><![CDATA["No-show".equals($F{status}) ? 1 : 0]]></variableExpression>
+        <initialValueExpression><![CDATA[0]]></initialValueExpression>
+    </variable>
+
+    <title>
+        <band height="100">
+            <rectangle>
+                <reportElement x="0" y="0" width="523" height="64" backcolor="#143E35" forecolor="#143E35"/>
+                <graphicElement><pen lineWidth="0.0"/></graphicElement>
+            </rectangle>
+            <staticText>
+                <reportElement x="16" y="9" width="250" height="28" forecolor="#FFFFFF"/>
+                <textElement verticalAlignment="Middle"><font size="20" isBold="true"/></textElement>
+                <text><![CDATA[Pawzenix]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="16" y="38" width="250" height="16" forecolor="#AAC5B5"/>
+                <textElement verticalAlignment="Middle"><font size="8"/></textElement>
+                <text><![CDATA[Pet care & veterinary centre]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="270" y="14" width="237" height="22" forecolor="#FFFFFF"/>
+                <textElement textAlignment="Right" verticalAlignment="Middle"><font size="13" isBold="true"/></textElement>
+                <text><![CDATA[Appointment activity]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="270" y="38" width="237" height="16" forecolor="#AAC5B5"/>
+                <textElement textAlignment="Right" verticalAlignment="Middle"><font size="8"/></textElement>
+                <text><![CDATA[Completed, cancelled and missed visits]]></text>
+            </staticText>
+            <textField>
+                <reportElement x="0" y="72" width="330" height="18" forecolor="#1F2A27"/>
+                <textElement verticalAlignment="Middle"><font size="9" isBold="true"/></textElement>
+                <textFieldExpression><![CDATA["Visit dates: " + $P{FROM_DATE} + " to " + $P{TO_DATE} + " (inclusive)"]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="330" y="72" width="193" height="18" forecolor="#5C6B66"/>
+                <textElement textAlignment="Right" verticalAlignment="Middle"><font size="8"/></textElement>
+                <textFieldExpression><![CDATA["Generated: " + $P{GENERATED_AT}]]></textFieldExpression>
+            </textField>
+        </band>
+    </title>
+
+    <columnHeader>
+        <band height="24">
+            <rectangle>
+                <reportElement x="0" y="0" width="523" height="24" backcolor="#187565" forecolor="#187565"/>
+                <graphicElement><pen lineWidth="0.0"/></graphicElement>
+            </rectangle>
+            <staticText><reportElement x="4" y="0" width="26" height="24" forecolor="#FFFFFF"/><textElement verticalAlignment="Middle"><font isBold="true"/></textElement><text><![CDATA[ID]]></text></staticText>
+            <staticText><reportElement x="32" y="0" width="84" height="24" forecolor="#FFFFFF"/><textElement verticalAlignment="Middle"><font isBold="true"/></textElement><text><![CDATA[Date & time]]></text></staticText>
+            <staticText><reportElement x="118" y="0" width="60" height="24" forecolor="#FFFFFF"/><textElement verticalAlignment="Middle"><font isBold="true"/></textElement><text><![CDATA[Pet]]></text></staticText>
+            <staticText><reportElement x="180" y="0" width="90" height="24" forecolor="#FFFFFF"/><textElement verticalAlignment="Middle"><font isBold="true"/></textElement><text><![CDATA[Owner]]></text></staticText>
+            <staticText><reportElement x="272" y="0" width="92" height="24" forecolor="#FFFFFF"/><textElement verticalAlignment="Middle"><font isBold="true"/></textElement><text><![CDATA[Service]]></text></staticText>
+            <staticText><reportElement x="366" y="0" width="80" height="24" forecolor="#FFFFFF"/><textElement verticalAlignment="Middle"><font isBold="true"/></textElement><text><![CDATA[Care provider]]></text></staticText>
+            <staticText><reportElement x="450" y="0" width="71" height="24" forecolor="#FFFFFF"/><textElement verticalAlignment="Middle"><font isBold="true"/></textElement><text><![CDATA[Status]]></text></staticText>
+        </band>
+    </columnHeader>
+
+    <detail>
+        <band height="20">
+            <!-- background strip: Zebra style paints every second row light green -->
+            <rectangle>
+                <reportElement style="Zebra" stretchType="RelativeToBandHeight" x="0" y="0" width="523" height="20"/>
+                <graphicElement><pen lineWidth="0.0"/></graphicElement>
+            </rectangle>
+            <textField textAdjust="StretchHeight">
+                <reportElement x="4" y="0" width="26" height="20"/>
+                <textElement verticalAlignment="Middle"/>
+                <textFieldExpression><![CDATA[$F{id}]]></textFieldExpression>
+            </textField>
+            <textField textAdjust="StretchHeight" isBlankWhenNull="true">
+                <reportElement x="32" y="0" width="84" height="20"/>
+                <textElement verticalAlignment="Middle"/>
+                <textFieldExpression><![CDATA[$F{date}]]></textFieldExpression>
+            </textField>
+            <textField textAdjust="StretchHeight" isBlankWhenNull="true">
+                <reportElement x="118" y="0" width="60" height="20"/>
+                <textElement verticalAlignment="Middle"/>
+                <textFieldExpression><![CDATA[$F{pet}]]></textFieldExpression>
+            </textField>
+            <textField textAdjust="StretchHeight" isBlankWhenNull="true">
+                <reportElement x="180" y="0" width="90" height="20"/>
+                <textElement verticalAlignment="Middle"/>
+                <textFieldExpression><![CDATA[$F{customer}]]></textFieldExpression>
+            </textField>
+            <textField textAdjust="StretchHeight" isBlankWhenNull="true">
+                <reportElement x="272" y="0" width="92" height="20"/>
+                <textElement verticalAlignment="Middle"/>
+                <textFieldExpression><![CDATA[$F{service}]]></textFieldExpression>
+            </textField>
+            <textField textAdjust="StretchHeight" isBlankWhenNull="true">
+                <reportElement x="366" y="0" width="80" height="20"/>
+                <textElement verticalAlignment="Middle"/>
+                <textFieldExpression><![CDATA[$F{staff}]]></textFieldExpression>
+            </textField>
+            <textField textAdjust="StretchHeight" isBlankWhenNull="true">
+                <reportElement style="StatusColour" x="450" y="0" width="71" height="20"/>
+                <textElement verticalAlignment="Middle"/>
+                <textFieldExpression><![CDATA[$F{status}]]></textFieldExpression>
+            </textField>
+        </band>
+    </detail>
+
+    <pageFooter>
+        <band height="22">
+            <line><reportElement x="0" y="2" width="523" height="1" forecolor="#C9D8D1"/></line>
+            <staticText>
+                <reportElement x="0" y="5" width="300" height="14" forecolor="#5C6B66"/>
+                <textElement verticalAlignment="Middle"><font size="7"/></textElement>
+                <text><![CDATA[Pawzenix - Appointment activity report]]></text>
+            </staticText>
+            <textField>
+                <reportElement x="323" y="5" width="147" height="14" forecolor="#5C6B66"/>
+                <textElement textAlignment="Right" verticalAlignment="Middle"><font size="7"/></textElement>
+                <textFieldExpression><![CDATA["Page " + $V{PAGE_NUMBER} + " of"]]></textFieldExpression>
+            </textField>
+            <textField evaluationTime="Report">
+                <reportElement x="473" y="5" width="50" height="14" forecolor="#5C6B66"/>
+                <textElement verticalAlignment="Middle"><font size="7"/></textElement>
+                <textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+            </textField>
+        </band>
+    </pageFooter>
+
+    <summary>
+        <band height="170">
+            <staticText>
+                <reportElement positionType="Float" x="0" y="16" width="523" height="22" forecolor="#143E35"/>
+                <textElement verticalAlignment="Middle"><font size="12" isBold="true"/></textElement>
+                <text><![CDATA[Summary]]></text>
+            </staticText>
+            <line><reportElement positionType="Float" x="0" y="40" width="523" height="1" forecolor="#187565"/></line>
+
+            <staticText><reportElement positionType="Float" x="0" y="46" width="200" height="18"/><textElement verticalAlignment="Middle"><font size="9" isBold="true"/></textElement><text><![CDATA[Total visits in this period]]></text></staticText>
+            <textField><reportElement positionType="Float" x="200" y="46" width="60" height="18"/><textElement textAlignment="Right" verticalAlignment="Middle"><font size="9" isBold="true"/></textElement><textFieldExpression><![CDATA[$V{totalVisits}]]></textFieldExpression></textField>
+
+            <staticText><reportElement positionType="Float" x="0" y="66" width="200" height="18"/><textElement verticalAlignment="Middle"/><text><![CDATA[Booked]]></text></staticText>
+            <textField><reportElement positionType="Float" x="200" y="66" width="60" height="18"/><textElement textAlignment="Right" verticalAlignment="Middle"/><textFieldExpression><![CDATA[$V{booked}]]></textFieldExpression></textField>
+
+            <staticText><reportElement positionType="Float" x="0" y="84" width="200" height="18"/><textElement verticalAlignment="Middle"/><text><![CDATA[Confirmed]]></text></staticText>
+            <textField><reportElement positionType="Float" x="200" y="84" width="60" height="18"/><textElement textAlignment="Right" verticalAlignment="Middle"/><textFieldExpression><![CDATA[$V{confirmed}]]></textFieldExpression></textField>
+
+            <staticText><reportElement positionType="Float" x="0" y="102" width="200" height="18" forecolor="#187565"/><textElement verticalAlignment="Middle"><font isBold="true"/></textElement><text><![CDATA[Completed]]></text></staticText>
+            <textField><reportElement positionType="Float" x="200" y="102" width="60" height="18" forecolor="#187565"/><textElement textAlignment="Right" verticalAlignment="Middle"><font isBold="true"/></textElement><textFieldExpression><![CDATA[$V{completed}]]></textFieldExpression></textField>
+
+            <staticText><reportElement positionType="Float" x="0" y="120" width="200" height="18" forecolor="#C0392B"/><textElement verticalAlignment="Middle"><font isBold="true"/></textElement><text><![CDATA[Cancelled]]></text></staticText>
+            <textField><reportElement positionType="Float" x="200" y="120" width="60" height="18" forecolor="#C0392B"/><textElement textAlignment="Right" verticalAlignment="Middle"><font isBold="true"/></textElement><textFieldExpression><![CDATA[$V{cancelled}]]></textFieldExpression></textField>
+
+            <staticText><reportElement positionType="Float" x="0" y="138" width="200" height="18" forecolor="#C0392B"/><textElement verticalAlignment="Middle"><font isBold="true"/></textElement><text><![CDATA[No-show (missed visit)]]></text></staticText>
+            <textField><reportElement positionType="Float" x="200" y="138" width="60" height="18" forecolor="#C0392B"/><textElement textAlignment="Right" verticalAlignment="Middle"><font isBold="true"/></textElement><textFieldExpression><![CDATA[$V{noShow}]]></textFieldExpression></textField>
+        </band>
+    </summary>
+
+    <noData>
+        <band height="130">
+            <rectangle>
+                <reportElement x="0" y="0" width="523" height="64" backcolor="#143E35" forecolor="#143E35"/>
+                <graphicElement><pen lineWidth="0.0"/></graphicElement>
+            </rectangle>
+            <staticText>
+                <reportElement x="16" y="9" width="250" height="28" forecolor="#FFFFFF"/>
+                <textElement verticalAlignment="Middle"><font size="20" isBold="true"/></textElement>
+                <text><![CDATA[Pawzenix]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="270" y="14" width="237" height="22" forecolor="#FFFFFF"/>
+                <textElement textAlignment="Right" verticalAlignment="Middle"><font size="13" isBold="true"/></textElement>
+                <text><![CDATA[Appointment activity]]></text>
+            </staticText>
+            <textField>
+                <reportElement x="0" y="82" width="523" height="22" forecolor="#1F2A27"/>
+                <textElement verticalAlignment="Middle"><font size="10" isBold="true"/></textElement>
+                <textFieldExpression><![CDATA["No appointments were found from " + $P{FROM_DATE} + " to " + $P{TO_DATE} + "."]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="0" y="104" width="523" height="16" forecolor="#5C6B66"/>
+                <textElement verticalAlignment="Middle"><font size="8"/></textElement>
+                <textFieldExpression><![CDATA["Generated: " + $P{GENERATED_AT}]]></textFieldExpression>
+            </textField>
+        </band>
+    </noData>
+</jasperReport>

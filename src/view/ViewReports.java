@@ -1,15 +1,23 @@
 package view;
 
-/**
- *
- * @author TANISHA SANJANA
- */
 
 public class ViewReports extends javax.swing.JPanel {
 
     public ViewReports() {
         initComponents();
+        // PDF download is not used: Jasper's preview window already has its own Save and Print buttons.
+        activityExport.setVisible(false);
+        revenueExport.setVisible(false);
+        if (!java.beans.Beans.isDesignTime()) {
+            new controller.ReportController(this);
+        }
     }
+
+    // Controller hooks stay OUTSIDE GUI Builder guarded sections.
+    public javax.swing.JTextField getFromField() { return fromField; }
+    public javax.swing.JTextField getToField() { return toField; }
+    public javax.swing.JButton getActivityPreview() { return activityPreview; }
+    public javax.swing.JButton getRevenuePreview() { return revenuePreview; }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
