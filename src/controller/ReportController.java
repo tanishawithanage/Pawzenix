@@ -1,20 +1,21 @@
 package controller;
 
-import java.awt.Cursor;
 import java.awt.Dialog;
 import java.awt.Window;
 import java.io.IOException;
 import java.io.InputStream;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
-import model.ReportData;
+import model.CustomException;
+import model.ReportDAO;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
@@ -25,92 +26,134 @@ import net.sf.jasperreports.swing.JRViewer;
 import view.ViewReports;
 
 /**
- *
- * @author TANISHA SANJANA
+ * Controller for the Reports page.
+ * Making a Jasper report takes 4 steps:
+ *   1. COMPILE  the design file (src/reports/*.jrxml)
+ *   2. LOAD     the rows from the database (ReportDAO)
+ *   3. FILL     the design with the rows and the dates
+ *   4. SHOW     the finished report in a preview window
  */
-public class ReportController {
-
-    private interface RowSource {
-        List<Map<String, ?>> load(LocalDate from, LocalDate to) throws SQLException;
-    }
-
+public class ReportController
+{
     private final ViewReports view;
-    private final Map<String, JasperReport> compiled = new HashMap<>();
+    private final ReportDAO reportDAO = new ReportDAO();
 
-    public ReportController(ViewReports view) {
+    public ReportController(ViewReports view)
+    {
         this.view = view;
 
+        // suggest "this month so far"
         LocalDate today = LocalDate.now();
         view.getFromField().setText(today.withDayOfMonth(1).toString());
         view.getToField().setText(today.toString());
 
-        view.getActivityPreview().addActionListener(e ->
-                run("appointment_activity", "Appointment activity", ReportData::appointments));
-        view.getRevenuePreview().addActionListener(e ->
-                run("invoice_revenue", "Invoice revenue & balances", ReportData::revenue));
+        view.getActivityPreview().addActionListener(e -> showAppointmentReport());
+        view.getRevenuePreview().addActionListener(e -> showRevenueReport());
     }
 
-    private void run(String design, String title, RowSource source) {
-        try {
+    private void showAppointmentReport()
+    {
+        try
+        {
             LocalDate from = readDate(view.getFromField().getText(), "From");
             LocalDate to = readDate(view.getToField().getText(), "To");
-            if (from.isAfter(to)) {
-                throw new IllegalArgumentException("The From date must not be after the To date.");
+            checkOrder(from, to);
+
+            List<Map<String, ?>> rows = reportDAO.getAppointments(from, to);
+            showReport("appointment_activity", "Appointment activity", rows, from, to);
+        }
+        catch (CustomException ex)
+        {
+            showError(ex.getMessage());
+        }
+    }
+
+    private void showRevenueReport()
+    {
+        try
+        {
+            LocalDate from = readDate(view.getFromField().getText(), "From");
+            LocalDate to = readDate(view.getToField().getText(), "To");
+            checkOrder(from, to);
+
+            List<Map<String, ?>> rows = reportDAO.getRevenue(from, to);
+            showReport("invoice_revenue", "Invoice revenue & balances", rows, from, to);
+        }
+        catch (CustomException ex)
+        {
+            showError(ex.getMessage());
+        }
+    }
+
+    // Steps 1, 3 and 4: compile the design, fill it with the rows and show it.
+    private void showReport(String design, String title, List<Map<String, ?>> rows, LocalDate from, LocalDate to)
+    {
+        try (InputStream file = ReportController.class.getResourceAsStream("/reports/" + design + ".jrxml"))
+        {
+            if (file == null)
+            {
+                throw new CustomException("Report design not found: /reports/" + design + ".jrxml\n"
+                        + "Check that the reports folder is inside the project's source packages.");
             }
-            view.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-            List<Map<String, ?>> rows = source.load(from, to);          
-            JasperPrint print = fill(design, rows, from, to);          
-            show(print, title);                                         
-        } catch (IllegalArgumentException | SQLException | JRException e) {
-            Input.error(view, e);
-        } finally {
-            view.setCursor(Cursor.getDefaultCursor());
+
+            // 1. compile the design
+            JasperReport report = JasperCompileManager.compileReport(file);
+
+            // 3. fill it: the parameters are printed in the header of the report
+            Map<String, Object> parameters = new HashMap<>();
+            parameters.put("FROM_DATE", from.toString());
+            parameters.put("TO_DATE", to.toString());
+            parameters.put("GENERATED_AT", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
+            JasperPrint print = JasperFillManager.fillReport(report, parameters, new JRMapCollectionDataSource(rows));
+
+            // 4. show it in a window (it has zoom, page buttons, print and save)
+            Window owner = SwingUtilities.getWindowAncestor(view);
+            JDialog dialog = new JDialog(owner, "Pawzenix - " + title, Dialog.ModalityType.MODELESS);
+            dialog.setContentPane(new JRViewer(print));
+            dialog.setSize(1000, 740);
+            dialog.setLocationRelativeTo(view);
+            dialog.setVisible(true);
+        }
+        catch (CustomException ex)
+        {
+            showError(ex.getMessage());
+        }
+        catch (JRException | IOException ex)
+        {
+            showError(ex.getMessage());
         }
     }
 
-    private LocalDate readDate(String text, String label) {
-        try {
-            return Input.date(text);
-        } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException(label + " date: " + e.getMessage());
+    // Reads a date like 2026-10-25 from a text box.
+    private LocalDate readDate(String text, String label) throws CustomException
+    {
+        String message = label + " date: Enter a valid date as YYYY-MM-DD (year 1000 to 9999).";
+        LocalDate date;
+        try
+        {
+            date = LocalDate.parse(text.trim());
+        }
+        catch (DateTimeParseException ex)
+        {
+            throw new CustomException(message);
+        }
+        if (date.getYear() < 1000 || date.getYear() > 9999)
+        {
+            throw new CustomException(message);
+        }
+        return date;
+    }
+
+    private void checkOrder(LocalDate from, LocalDate to) throws CustomException
+    {
+        if (from.isAfter(to))
+        {
+            throw new CustomException("The From date must not be after the To date.");
         }
     }
 
-    private JasperPrint fill(String design, List<Map<String, ?>> rows, LocalDate from, LocalDate to)
-            throws JRException {
-        Map<String, Object> parameters = new HashMap<>();
-        parameters.put("FROM_DATE", from.toString());
-        parameters.put("TO_DATE", to.toString());
-        parameters.put("GENERATED_AT",
-                LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
-        return JasperFillManager.fillReport(loadDesign(design), parameters, new JRMapCollectionDataSource(rows));
-    }
-
-    private JasperReport loadDesign(String design) throws JRException {
-        JasperReport report = compiled.get(design);
-        if (report == null) {
-            String path = "/reports/" + design + ".jrxml";
-            try (InputStream in = ReportController.class.getResourceAsStream(path)) {
-                if (in == null) {
-                    throw new JRException("Report design not found: " + path
-                            + "\nCheck that the reports folder is inside the project's source packages.");
-                }
-                report = JasperCompileManager.compileReport(in);
-            } catch (IOException e) {
-                throw new JRException(e);
-            }
-            compiled.put(design, report);
-        }
-        return report;
-    }
-
-    private void show(JasperPrint print, String title) throws JRException {
-        JRViewer viewer = new JRViewer(print);
-        Window owner = SwingUtilities.getWindowAncestor(view);
-        JDialog dialog = new JDialog(owner, "Pawzenix - " + title, Dialog.ModalityType.MODELESS);
-        dialog.setContentPane(viewer);
-        dialog.setSize(1000, 740);
-        dialog.setLocationRelativeTo(view);
-        dialog.setVisible(true);
+    private void showError(String message)
+    {
+        JOptionPane.showMessageDialog(view, message, "Pawzenix", JOptionPane.ERROR_MESSAGE);
     }
 }

@@ -1,28 +1,25 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package model;
 
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
-
 /**
- *
- * @author TANISHA SANJANA
+ * One pet (a row of the pets table).
  */
-public class Pet {
-    private final int id;
-    private final int customerId;
-    private final String name;
-    private final String species;
-    private final String breed;
-    private final int age;
-    private final String gender;
-    private final String customerName;
+public class Pet
+{
+    private int id;
+    private int customerId;
+    private String name;
+    private String species;
+    private String breed;
+    private int age;
+    private String gender;
+    private String customerName;   // owner's name, only used to show in the table
 
-    public Pet(int id, int customerId, String name, String species, String breed, int age, String gender, String customerName) {
+    public Pet()
+    {
+    }
+
+    public Pet(int id, int customerId, String name, String species, String breed, int age, String gender, String customerName)
+    {
         this.id = id;
         this.customerId = customerId;
         this.name = name;
@@ -33,66 +30,83 @@ public class Pet {
         this.customerName = customerName;
     }
 
-    public int getId() { return id; }
-    public int getCustomerId() { return customerId; }
-    public String getName() { return name; }
-    public String getSpecies() { return species; }
-    public String getBreed() { return breed; }
-    public int getAge() { return age; }
-    public String getGender() { return gender; }
-    public String getCustomerName() { return customerName; }
-
-    public static List<Pet> getAll() throws SQLException {
-        List<Pet> rows = new ArrayList<>();
-        String sql = "SELECT p.*, c.name AS customer_name FROM pets p JOIN customers c ON c.id=p.customer_id ORDER BY p.id DESC";
-        try (Connection c = DBConnection.getConnection();
-             PreparedStatement s = c.prepareStatement(sql); ResultSet r = s.executeQuery()) {
-            while (r.next()) rows.add(new Pet(r.getInt("id"), r.getInt("customer_id"),
-                    r.getString("name"), r.getString("species"), r.getString("breed"),
-                    r.getInt("age_years"), r.getString("gender"), r.getString("customer_name")));
-        }
-        return rows;
+    public int getId()
+    {
+        return id;
     }
 
-    public void add() throws SQLException { save(false); }
-    public void update() throws SQLException { save(true); }
-
-    private void save(boolean update) throws SQLException {
-        String sql = update
-                ? "UPDATE pets SET customer_id=?, name=?, species=?, breed=?, age_years=?, gender=? WHERE id=?"
-                : "INSERT INTO pets (customer_id,name,species,breed,age_years,gender) VALUES (?,?,?,?,?,?)";
-        try (Connection c = DBConnection.getConnection()) {
-            c.setAutoCommit(false);
-            try {
-                try (PreparedStatement lock = c.prepareStatement("SELECT id FROM app_lock WHERE id=1 FOR UPDATE")) {
-                    lock.executeQuery().close();
-                }
-                if (update) {
-                    try (PreparedStatement s = c.prepareStatement("SELECT b.id FROM bills b JOIN appointments a ON a.id=b.appointment_id WHERE a.pet_id=? AND b.customer_id<>? LIMIT 1")) {
-                        s.setInt(1, id); s.setInt(2, customerId);
-                        try (ResultSet r = s.executeQuery()) {
-                            if (r.next()) throw new SQLException("This pet has a bill linked to its current owner. The owner cannot be changed.", "45000");
-                        }
-                    }
-                }
-                try (PreparedStatement s = c.prepareStatement(sql)) {
-                    s.setInt(1, customerId); s.setString(2, name); s.setString(3, species);
-                    s.setString(4, breed); s.setInt(5, age); s.setString(6, gender);
-                    if (update) s.setInt(7, id);
-                    if (s.executeUpdate()==0) throw new SQLException("Pet no longer exists. Refresh the list.", "02000");
-                }
-                c.commit();
-            } catch (SQLException | RuntimeException e) {
-                try { c.rollback(); } catch (SQLException rollback) { e.addSuppressed(rollback); }
-                throw e;
-            }
-        }
+    public void setId(int id)
+    {
+        this.id = id;
     }
 
-    public static void delete(int id) throws SQLException {
-        try (Connection c = DBConnection.getConnection(); PreparedStatement s = c.prepareStatement("DELETE FROM pets WHERE id=?")) {
-            s.setInt(1, id);
-            if (s.executeUpdate()==0) throw new SQLException("Pet no longer exists. Refresh the list.", "02000");
-        }
+    public int getCustomerId()
+    {
+        return customerId;
+    }
+
+    public void setCustomerId(int customerId)
+    {
+        this.customerId = customerId;
+    }
+
+    public String getName()
+    {
+        return name;
+    }
+
+    public void setName(String name)
+    {
+        this.name = name;
+    }
+
+    public String getSpecies()
+    {
+        return species;
+    }
+
+    public void setSpecies(String species)
+    {
+        this.species = species;
+    }
+
+    public String getBreed()
+    {
+        return breed;
+    }
+
+    public void setBreed(String breed)
+    {
+        this.breed = breed;
+    }
+
+    public int getAge()
+    {
+        return age;
+    }
+
+    public void setAge(int age)
+    {
+        this.age = age;
+    }
+
+    public String getGender()
+    {
+        return gender;
+    }
+
+    public void setGender(String gender)
+    {
+        this.gender = gender;
+    }
+
+    public String getCustomerName()
+    {
+        return customerName;
+    }
+
+    public void setCustomerName(String customerName)
+    {
+        this.customerName = customerName;
     }
 }

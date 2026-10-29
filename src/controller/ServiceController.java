@@ -1,280 +1,217 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package controller;
 
-import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
+import model.CustomException;
 import model.Service;
+import model.ServiceDAO;
 import view.ViewServices;
 
 /**
- *
- * @author TANISHA SANJANA
+ * Controller for the Services page: add, update, delete and show services.
  */
-public class ServiceController {
-    
-
+public class ServiceController
+{
     private final ViewServices view;
-    private int selectedId = 0;
+    private final ServiceDAO serviceDAO = new ServiceDAO();
 
-    public ServiceController(ViewServices view) {
+    private List<Service> shownServices = new ArrayList<>();
+    private int selectedId = 0;     // 0 means no service is selected
+
+    public ServiceController(ViewServices view)
+    {
         this.view = view;
 
         view.getAddButton().addActionListener(e -> addService());
         view.getEditButton().addActionListener(e -> updateService());
         view.getDeleteButton().addActionListener(e -> deleteService());
-        view.getClearButton().addActionListener(e -> clearFields());
-        view.getRefreshButton().addActionListener(e -> loadServices());
+        view.getClearButton().addActionListener(e -> clear());
+        view.getRefreshButton().addActionListener(e -> showAll());
 
-        view.getRecordsTable().getSelectionModel()
-                .addListSelectionListener(e -> {
-                    if (!e.getValueIsAdjusting()) {
-                        selectService();
-                    }
-                });
+        view.getRecordsTable().getSelectionModel().addListSelectionListener(e ->
+        {
+            if (!e.getValueIsAdjusting())
+            {
+                onRowSelected();
+            }
+        });
 
-        loadServices();
+        showAll();
     }
 
-    private Service readInput(int id) {
-
-        String name = view.getNameField().getText().trim();
-        String minutes = view.getDurationField().getText().trim();
-
-        if (name.isEmpty()) {
-            throw new IllegalArgumentException(
-                    "Enter the service name."
-            );
+    private void addService()
+    {
+        try
+        {
+            Service service = readForm();
+            serviceDAO.insert(service);
         }
-
-        if (name.length() > 100) {
-            throw new IllegalArgumentException(
-                    "Service name must not exceed 100 characters."
-            );
+        catch (CustomException ex)
+        {
+            showError(ex.getMessage());
+            return;
         }
-
-        if (view.getCategoryComboBox().getSelectedIndex() <= 0) {
-            throw new IllegalArgumentException(
-                    "Select a category."
-            );
-        }
-
-        String category = view.getCategoryComboBox()
-                .getSelectedItem().toString();
-
-        int duration;
-
-        try {
-            duration = Integer.parseInt(minutes);
-
-        } catch (NumberFormatException e) {
-            throw new IllegalArgumentException(
-                    "Enter minutes as a whole number, such as 30."
-            );
-        }
-
-        if (duration <= 0) {
-            throw new IllegalArgumentException(
-                    "Minutes must be greater than zero."
-            );
-        }
-
-        return new Service(id, name, category, duration);
+        JOptionPane.showMessageDialog(view, "Service added successfully.");
+        clear();
+        showAll();
     }
 
-    private void addService() {
-        try {
-            Service service = readInput(0);
-            service.add();
-
-        } catch (IllegalArgumentException e) {
-            JOptionPane.showMessageDialog(
-                    view, "Error: " + e.getMessage()
-            );
-            return;
-
-        } catch (SQLException e) {
-            showDatabaseError(e);
+    private void updateService()
+    {
+        try
+        {
+            checkSelected();
+            Service service = readForm();
+            service.setId(selectedId);
+            serviceDAO.update(service);
+        }
+        catch (CustomException ex)
+        {
+            showError(ex.getMessage());
             return;
         }
-
-        JOptionPane.showMessageDialog(
-                view, "Service added successfully."
-        );
-
-        clearFields();
-        loadServices();
+        JOptionPane.showMessageDialog(view, "Service updated successfully.");
+        clear();
+        showAll();
     }
 
-    private void updateService() {
-        try {
-            requireSelection();
+    private void deleteService()
+    {
+        try
+        {
+            checkSelected();
 
-            Service service = readInput(selectedId);
-            service.update();
-
-        } catch (IllegalArgumentException e) {
-            JOptionPane.showMessageDialog(
-                    view, "Error: " + e.getMessage()
-            );
-            return;
-
-        } catch (SQLException e) {
-            showDatabaseError(e);
-            return;
-        }
-
-        JOptionPane.showMessageDialog(
-                view, "Service updated successfully."
-        );
-
-        clearFields();
-        loadServices();
-    }
-
-    private void deleteService() {
-        try {
-            requireSelection();
-
-            int answer = JOptionPane.showConfirmDialog(
-                    view,
-                    "Delete this service?",
-                    "Confirm Delete",
-                    JOptionPane.YES_NO_OPTION
-            );
-
-            if (answer != JOptionPane.YES_OPTION) {
+            int answer = JOptionPane.showConfirmDialog(view, "Delete this service?",
+                    "Confirm Delete", JOptionPane.YES_NO_OPTION);
+            if (answer != JOptionPane.YES_OPTION)
+            {
                 return;
             }
-
-            Service.delete(selectedId);
-
-        } catch (IllegalArgumentException e) {
-            JOptionPane.showMessageDialog(
-                    view, "Error: " + e.getMessage()
-            );
-            return;
-
-        } catch (SQLException e) {
-            showDatabaseError(e);
+            serviceDAO.delete(selectedId);
+        }
+        catch (CustomException ex)
+        {
+            showError(ex.getMessage());
             return;
         }
-
-        JOptionPane.showMessageDialog(
-                view, "Service deleted successfully."
-        );
-
-        clearFields();
-        loadServices();
+        JOptionPane.showMessageDialog(view, "Service deleted successfully.");
+        clear();
+        showAll();
     }
 
-    private void loadServices() {
-        try {
-            List<Service> services = Service.getAll();
+    private void showAll()
+    {
+        try
+        {
+            shownServices = serviceDAO.findAll();
 
             view.getSearchField().setText("");
+            clear();
 
-            view.getRecordsTable().setRowSorter(
-                    new TableRowSorter<>(
-                            view.getRecordsTable().getModel()
-                    )
-            );
+            DefaultTableModel model = (DefaultTableModel) view.getRecordsTable().getModel();
+            model.setRowCount(0);
+            view.getRecordsTable().setRowSorter(new TableRowSorter<>(model));
 
-            clearFields();
-
-            DefaultTableModel table = (DefaultTableModel)
-                    view.getRecordsTable().getModel();
-
-            table.setRowCount(0);
-
-            for (Service service : services) {
-                table.addRow(new Object[]{
-                    service.getId(),
-                    service.getName(),
-                    service.getCategory(),
-                    service.getDuration()
+            for (Service s : shownServices)
+            {
+                model.addRow(new Object[]
+                {
+                    s.getId(),
+                    s.getName(),
+                    s.getCategory(),
+                    s.getDuration()
                 });
             }
-
-            view.setStatus(services.size() + " service(s).");
-
-        } catch (SQLException e) {
+            view.setStatus(shownServices.size() + " service(s).");
+        }
+        catch (CustomException ex)
+        {
             view.setStatus("Could not load services. Click Refresh.");
-
-            JOptionPane.showMessageDialog(
-                    view,
-                    "Error loading services: " + e.getMessage()
-                    + "\nClick Refresh after fixing the connection."
-            );
+            showError("Error loading services: " + ex.getMessage() + "\nClick Refresh after fixing the connection.");
         }
     }
 
-    private void selectService() {
+    private void onRowSelected()
+    {
+        int row = view.getRecordsTable().getSelectedRow();
 
-        int selectedRow = view.getRecordsTable().getSelectedRow();
-
-        if (selectedRow == -1) {
+        if (row == -1)
+        {
             selectedId = 0;
             view.getIdField().setText("Auto ID");
             return;
         }
 
-        int row = view.getRecordsTable()
-                .convertRowIndexToModel(selectedRow);
-
-        DefaultTableModel table = (DefaultTableModel)
-                view.getRecordsTable().getModel();
-
-        selectedId = ((Number) table.getValueAt(row, 0)).intValue();
-
-        view.getIdField().setText(String.valueOf(selectedId));
-        view.getNameField().setText(table.getValueAt(row, 1).toString());
-
-        view.getCategoryComboBox().setSelectedItem(
-                table.getValueAt(row, 2).toString()
-        );
-
-        view.getDurationField().setText(
-                table.getValueAt(row, 3).toString()
-        );
+        Service s = shownServices.get(view.getRecordsTable().convertRowIndexToModel(row));
+        selectedId = s.getId();
+        view.getIdField().setText(String.valueOf(s.getId()));
+        view.getNameField().setText(s.getName());
+        view.getCategoryComboBox().setSelectedItem(s.getCategory());
+        view.getDurationField().setText(String.valueOf(s.getDuration()));
     }
 
-    private void requireSelection() {
-        if (selectedId == 0) {
-            throw new IllegalArgumentException(
-                    "Select a service from the table first."
-            );
-        }
-    }
-
-    private void clearFields() {
+    private void clear()
+    {
         selectedId = 0;
         view.clearForm();
     }
 
-    private void showDatabaseError(SQLException e) {
-
-        if (e.getErrorCode() == 1062) {
-            JOptionPane.showMessageDialog(
-                    view, "Error: A service with this name already exists."
-            );
-
-        } else if (e.getErrorCode() == 1451) {
-            JOptionPane.showMessageDialog(
-                    view,
-                    "Error: Cannot delete this service because "
-                    + "other records are linked to it."
-            );
-
-        } else {
-            JOptionPane.showMessageDialog(
-                    view, "Error: " + e.getMessage()
-            );
+    private void checkSelected() throws CustomException
+    {
+        if (selectedId == 0)
+        {
+            throw new CustomException("Select a service from the table first.");
         }
+    }
+
+    // Reads the form and checks it. Returns a Service (without an id).
+    private Service readForm() throws CustomException
+    {
+        String name = view.getNameField().getText().trim();
+        String minutes = view.getDurationField().getText().trim();
+
+        if (name.isEmpty())
+        {
+            throw new CustomException("Enter the service name.");
+        }
+        if (name.length() > 100)
+        {
+            throw new CustomException("Service name must not exceed 100 characters.");
+        }
+
+        // the first item of the category list is only a hint, so it cannot be chosen
+        if (view.getCategoryComboBox().getSelectedIndex() <= 0)
+        {
+            throw new CustomException("Select a category.");
+        }
+        String category = view.getCategoryComboBox().getSelectedItem().toString();
+
+        int duration;
+        try
+        {
+            duration = Integer.parseInt(minutes);
+        }
+        catch (NumberFormatException ex)
+        {
+            throw new CustomException("Enter minutes as a whole number, such as 30.");
+        }
+        if (duration <= 0)
+        {
+            throw new CustomException("Minutes must be greater than zero.");
+        }
+
+        Service service = new Service();
+        service.setName(name);
+        service.setCategory(category);
+        service.setDuration(duration);
+        return service;
+    }
+
+    private void showError(String message)
+    {
+        JOptionPane.showMessageDialog(view, message, "Pawzenix", JOptionPane.ERROR_MESSAGE);
     }
 }

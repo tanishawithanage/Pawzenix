@@ -1,72 +1,97 @@
 package controller;
 
-import model.User;
-import view.*;
 import java.awt.BorderLayout;
 import java.awt.Window;
-import java.util.Arrays;
-import java.util.function.Supplier;
-import javax.swing.*;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
+import model.User;
+import view.ViewAppointments;
+import view.ViewBilling;
+import view.ViewCustomers;
+import view.ViewDashboard;
+import view.ViewLogin;
+import view.ViewMain;
+import view.ViewPets;
+import view.ViewReports;
+import view.ViewServices;
+import view.ViewStaff;
 
 /**
- *
- * @author TANISHA SANJANA
+ * Controller for the main window: the menu on the left opens the pages, and Sign out goes back to the login.
  */
-
-public class MainController {
+public class MainController
+{
     private final ViewMain view;
-    private final User user;
 
-    public MainController(ViewMain view,User user) {
-        this.view=view; this.user=user;
+    public MainController(ViewMain view, User user)
+    {
+        this.view = view;
         view.getContentPanel().setLayout(new BorderLayout());
-        bind(view.getDashboardButton(),ViewDashboard::new);
-        bind(view.getCustomersButton(),ViewCustomers::new);
-        bind(view.getPetsButton(),ViewPets::new);
-        bind(view.getAppointmentsButton(),ViewAppointments::new);
-        bind(view.getBillingButton(),ViewBilling::new);
-        bind(view.getServicesButton(),ViewServices::new);
-        bind(view.getStaffButton(),ViewStaff::new);
-        bind(view.getReportsButton(),ViewReports::new);
-        view.getUserLabel().setText(user==null?"Development mode":user.getUsername());
-        view.getRoleLabel().setText(user==null?"Login not enabled":"Signed in");
-        view.getPasswordButton().setEnabled(user!=null);
-        view.getPasswordButton().addActionListener(e->changePassword());
-        view.getLogoutButton().addActionListener(e->logout());
-        show(new ViewDashboard());
-    }
 
-    private void bind(JButton button,Supplier<JPanel> page) {
-        for (java.awt.event.ActionListener listener:button.getActionListeners()) button.removeActionListener(listener);
-        button.addActionListener(e->show(page.get()));
-    }
+        // every menu button opens a new page (a new page reads fresh data from the database)
+        view.getDashboardButton().addActionListener(e -> showDashboard());
+        view.getCustomersButton().addActionListener(e -> showPage(new ViewCustomers()));
+        view.getPetsButton().addActionListener(e -> showPage(new ViewPets()));
+        view.getAppointmentsButton().addActionListener(e -> showPage(new ViewAppointments()));
+        view.getBillingButton().addActionListener(e -> showPage(new ViewBilling()));
+        view.getServicesButton().addActionListener(e -> showPage(new ViewServices()));
+        view.getStaffButton().addActionListener(e -> showPage(new ViewStaff()));
+        view.getReportsButton().addActionListener(e -> showPage(new ViewReports()));
+        view.getLogoutButton().addActionListener(e -> logout());
 
-    private void show(JPanel page) {
-        if (page instanceof ViewDashboard) {
-            ((ViewDashboard)page).getBookButton().addActionListener(e->show(new ViewAppointments()));
+        // show who is signed in
+        if (user == null)
+        {
+            view.getUserLabel().setText("Development mode");
+            view.getRoleLabel().setText("Login not enabled");
         }
-        view.getContentPanel().removeAll(); view.getContentPanel().add(page,BorderLayout.CENTER);
-        view.getContentPanel().revalidate(); view.getContentPanel().repaint();
+        else
+        {
+            view.getUserLabel().setText(user.getUsername());
+            view.getRoleLabel().setText("Signed in");
+        }
+
+        // the password is fixed in LoginController, so there is nothing to change
+        view.getPasswordButton().setVisible(false);
+
+        showDashboard();
     }
 
-    private void logout() {
-        if (!Input.confirm(view,"Sign out? Unsaved form changes will be lost.")) return;
-        Window window=SwingUtilities.getWindowAncestor(view);
-        if (window!=null) window.dispose();
-        ViewLogin login=new ViewLogin(); login.setLocationRelativeTo(null); login.setVisible(true);
+    // The Overview page. Its "Book a visit" button opens the Appointments page.
+    private void showDashboard()
+    {
+        ViewDashboard dashboard = new ViewDashboard();
+        dashboard.getBookButton().addActionListener(e -> showPage(new ViewAppointments()));
+        showPage(dashboard);
     }
 
-    private void changePassword() {
-        if (user==null) return;
-        JPasswordField current=new JPasswordField(),replacement=new JPasswordField(),confirm=new JPasswordField();
-        Object[] fields={"Current password",current,"New password (8 to 128 characters)",replacement,"Confirm new password",confirm};
-        if (JOptionPane.showConfirmDialog(view,fields,"Change password",JOptionPane.OK_CANCEL_OPTION)!=JOptionPane.OK_OPTION) return;
-        char[] old=current.getPassword(),next=replacement.getPassword(),again=confirm.getPassword();
-        current.setText(""); replacement.setText(""); confirm.setText("");
-        try {
-            if (!Arrays.equals(next,again)) throw new IllegalArgumentException("New passwords do not match.");
-            user.changePassword(old,next); JOptionPane.showMessageDialog(view,"Password changed.");
-        } catch (Exception e) { Input.error(view,e); }
-        finally { Arrays.fill(old,'\0'); Arrays.fill(next,'\0'); Arrays.fill(again,'\0'); }
+    // Puts a page in the middle of the window.
+    private void showPage(JPanel page)
+    {
+        view.getContentPanel().removeAll();
+        view.getContentPanel().add(page, BorderLayout.CENTER);
+        view.getContentPanel().revalidate();
+        view.getContentPanel().repaint();
+    }
+
+    private void logout()
+    {
+        int answer = JOptionPane.showConfirmDialog(view, "Sign out? Unsaved form changes will be lost.",
+                "Confirm", JOptionPane.YES_NO_OPTION);
+        if (answer != JOptionPane.YES_OPTION)
+        {
+            return;
+        }
+
+        // close the main window and open the login window again
+        Window window = SwingUtilities.getWindowAncestor(view);
+        if (window != null)
+        {
+            window.dispose();
+        }
+        ViewLogin login = new ViewLogin();
+        login.setLocationRelativeTo(null);
+        login.setVisible(true);
     }
 }
